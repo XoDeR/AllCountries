@@ -14,7 +14,7 @@ function App() {
 }
 
 const Home = () => {
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [dataDef, setDataDef] = useState([]);
   const [down, setDown] = useState(false);
@@ -57,11 +57,13 @@ const Home = () => {
     }
     return (
       <div className="container">
+        
         <div className="header">
           <div className="header-info">
             <h1>Where in the world?</h1>
           </div>
         </div>
+        
         <div className="filter">
           <div className="search-bar">
             <i className="fas fa-search"></i>
@@ -117,8 +119,9 @@ const Home = () => {
             </div>
           </div>
         </div>
+        
         <div className="countries">
-          {data.map((item) => {
+          {data.filter((item) => { return item.population >= 1000000 }).map((item) => {
             return (
               <Link to={`/${item.name}`} className="card" key={item.name}>
                 <img src={item.flag} alt="flag" />
