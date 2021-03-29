@@ -12,39 +12,6 @@ body a {
   color: black;
 }
 
-body.dark {
-  color: white;
-  background-color: #202c37;
-}
-body.dark a {
-  color: white;
-}
-body.dark input {
-  color: white;
-}
-body.dark input::-moz-placeholder {
-  color: white;
-}
-body.dark input:-ms-input-placeholder {
-  color: white;
-}
-body.dark input::placeholder {
-  color: white;
-}
-body.dark .search-bar,
-body.dark .header,
-body.dark .card,
-body.dark .dropdown,
-body.dark .hidden {
-  background-color: #2b3945;
-}
-body.dark .filter-btn {
-  color: white;
-}
-body.dark .border-btn {
-  color: white;
-}
-
 .loading {
   position: absolute;
   top: 0;
