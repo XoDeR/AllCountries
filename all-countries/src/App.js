@@ -10,22 +10,19 @@ import load from "./Snake.gif";
 const url = "https://restcountries.eu/rest/v2/all";
 
 function App() {
+  return <Home />;
+}
+
+const Home = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Route exact path="/">
+        <div />
+      </Route>
+      <Route path="/:name">
+        <div />
+      </Route>
+    </Router>
   );
 }
 
