@@ -259,6 +259,19 @@ a {
   margin-right: 15px;
 }
 
+.custom-cont .next-btn {
+  margin: 50px 0;
+  font-size: 19px;
+  font-weight: 400;
+  float: right;
+}
+
+.quiz-btn {
+  margin: 30px 0;
+  font-size: 19px;
+  font-weight: 400;
+}
+
 .custom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -4,7 +4,9 @@ import {
   useParams,
   Route,
   Link,
+  useHistory
 } from "react-router-dom";
+import { Redirect } from 'react-router';
 import "./style.css";
 import load from "./Snake.gif";
 const url = "https://restcountries.eu/rest/v2/all";
@@ -61,6 +63,14 @@ const Home = () => {
         <div className="header">
           <div className="header-info">
             <h1>Where in the world?</h1>
+            <button className="quiz-btn">
+              <Link to="/quiz">
+                <span>
+                  <i className="fas fa-address-book-o"></i>
+                </span>
+                <span>Quiz</span>
+              </Link>
+            </button>
           </div>
         </div>
         
@@ -158,7 +168,143 @@ const Home = () => {
       <Route path="/:name">
         <SingleCountry data={data} />
       </Route>
+      <Route exact path="/quiz">
+        <Quiz data={data} />
+      </Route>
+      <Route exact path="/quizReload">
+        <QuizReload data={data} />
+      </Route>
     </Router>
+  );
+}
+
+const QuizReload = ({ data }) => {
+  let history = useHistory();
+  
+  useEffect(
+    () => {
+      let timer1 = setTimeout(() => { history.push("/quiz"); }, 500);
+
+      // this will clear Timeout
+      // when component unmount like in willComponentUnmount
+      // and show will not change to true
+      return () => {
+        clearTimeout(timer1);
+      };
+    },
+    // useEffect will run only one time with empty []
+    // if you pass a value to array,
+    // like this - [data]
+    // than clearTimeout will run every time
+    // this value changes (useEffect re-run)
+    []
+  );
+
+  return (<></>)
+}
+
+const Quiz = ({ data }) => {
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  
+  const [item, setItem] = useState(data[Math.floor(Math.random() * data.length)]);
+  
+  const [capital, setCapital] = useState(item.capital);
+  
+  return (
+    <>
+      <div className="container">
+        <div className="header">
+          <div className="header-info">
+            <h1>Where in the world?</h1>
+          </div>
+        </div>
+        <div className="custom-cont">
+          <div>
+            <button className="back-btn">
+              <Link to="/">
+                <span>
+                  <i className="fas fa-arrow-left"></i>
+                </span>
+                <span>Back</span>
+              </Link>
+            </button>
+            <button className="next-btn">
+              <Link to="/quizReload">
+                <span>
+                  <i className="fas fa-arrow-right"></i>
+                </span>
+                <span>Next</span>
+              </Link>
+            </button>
+          </div>
+          <div className="custom-grid">
+            <div className="custom-img">
+              <img src={item.flag} alt="img" />
+            </div>
+            <div className="custom-text">
+              <h2>{item.name}</h2>
+              <div className="tc">
+                <div className="1">
+                  <h5>
+                    <span className="bold">Native Name: </span>
+                    <span className="light">{item.nativeName}</span>
+                  </h5>
+                  <h5>
+                    <span className="bold">Population: </span>
+                    <span className="light">
+                      {numberWithCommas(item.population)}
+                    </span>
+                  </h5>
+                  <h5>
+                    <span className="bold">Region: </span>
+                    <span className="light">{item.region}</span>
+                  </h5>
+                  <h5>
+                    <span className="bold">Sub Region: </span>
+                    <span className="light">{item.subregion}</span>
+                  </h5>
+                </div>
+                <div className="2">
+                  <h5>
+                    <span className="bold">Top Level Domain: </span>
+                    <span className="light">{item.topLevelDomain}</span>
+                  </h5>
+                  <h5>
+                    <span className="bold">Currencies: </span>
+                    <span className="light">
+                      {item.currencies[0].name}
+                    </span>
+                  </h5>
+                  <h5>
+                    <span className="bold">Languages: </span>
+                    <span className="light">
+                      {item.languages.map((r) => r.name).join(", ")}
+                    </span>
+                  </h5>
+                </div>
+              </div>
+              <div className="border">
+                <h4>Border Countries: </h4>
+                <span>
+                  {item.borders.map((f, index) => {
+                    if (!f) {
+                      return <p>No Bordering Countries</p>;
+                    }
+                    return (
+                      <button className="border-btn">
+                        {f}
+                      </button>
+                    );
+                  })}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
