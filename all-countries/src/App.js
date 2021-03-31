@@ -26,10 +26,12 @@ const Home = () => {
   
   const getCountries = async () => {
     const response = await fetch(url);
-    const final = await response.json();
-    setData(final);
-    setDataDef(final);
-    setDrop(final);
+    const finalResponse = await response.json();
+    
+    setData(finalResponse.filter((item) => { return item.population >= 1000000 }));
+    setDataDef(finalResponse.filter((item) => { return item.population >= 1000000 }));
+    setDrop(finalResponse.filter((item) => { return item.population >= 1000000 }));
+    
     setLoading(false);
   };
   const sort = [...new Set(drop.map((item) => item.region))];
@@ -131,7 +133,8 @@ const Home = () => {
         </div>
         
         <div className="countries">
-          {data.filter((item) => { return item.population >= 1000000 }).map((item) => {
+          {
+            data.map((item) => {
             return (
               <Link to={`/${item.name}`} className="card" key={item.name}>
                 <img src={item.flag} alt="flag" />
