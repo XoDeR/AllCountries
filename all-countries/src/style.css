@@ -70,8 +70,34 @@ body a {
 
 button {
   background: none;
-  border: none;
   outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.button-guess-container {
+  height: 200px;
+  position: relative;
+  border: 1px solid beige;
+}
+
+.button-guess-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 1px solid beige;
+}
+
+.button-guess-variant {
+  background-color: light-blue; 
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
 
 .shown {
@@ -328,10 +354,6 @@ a {
 .tc h5 {
   font-size: 1rem;
   line-height: 35px;
-}
-
-button {
-  cursor: pointer;
 }
 
 .border-btn {

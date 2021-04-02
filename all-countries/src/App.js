@@ -181,9 +181,6 @@ const Home = () => {
       <Route exact path="/quiz2">
         <Quiz2 data={data} />
       </Route>
-      <Route exact path="/quiz2Reload">
-        <Quiz2Reload data={data} />
-      </Route>
     </Router>
   );
 }
@@ -296,7 +293,7 @@ const Quiz1 = ({ data }) => {
         </div>
         <div className="custom-cont">
           <div>
-          {/*<!-- Back -->*/}
+            {/*<!-- Back -->*/}
             <button className="back-btn">
               <Link to="/">
                 <span>
@@ -409,36 +406,101 @@ const Quiz1 = ({ data }) => {
   );
 }
 
-const Quiz2Reload = ({ data }) => {
-  let history = useHistory();
-  
-  useEffect(
-    () => {
-      let timer1 = setTimeout(() => { history.push("/quiz2"); }, 500);
-      return () => {
-        clearTimeout(timer1);
-      };
-    },
-    // useEffect will run only one time with empty []
-    // if you pass a value to array,
-    // like this - [data]
-    // than clearTimeout will run every time
-    // this value changes (useEffect re-run)
-    []
-  );
-
-  return (<></>)
-}
-
 const Quiz2 = ({ data }) => {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   
-  const [item, setItem] = useState(data[Math.floor(Math.random() * data.length)]);
+  const [countriesRemaining, setCountriesRemaining] = useState(data);
   
-  const [capital, setCapital] = useState(item.capital);
+  const [item, setItem] = useState(countriesRemaining[Math.floor(Math.random() * countriesRemaining.length)]);
   
+  const [inputCapital, setInputCapital] = useState("");
+  
+  const [capitalCorrect, setCapitalCorrect] = useState(false);
+  
+  const [isNewQuiz, setIsNewQuiz] = useState(false);
+  
+  const [guessMade, setGuessMade] = useState(false);
+  const [guessedCorrect, setGuessedCorrect] = useState(0);
+  const [totalGuesses, setTotalGuesses] = useState(0);
+  
+  const isCapitalCorrectFirstRun = useRef(true);
+  useEffect (() => {
+    if (isCapitalCorrectFirstRun.current) {
+      isCapitalCorrectFirstRun.current = false;
+      return;
+    }
+    if (capitalCorrect === true) {
+      setGuessedCorrect(guessedCorrect + 1);
+    }
+    
+    setCapitalCorrect(false);
+    console.log("capitalCorrect");
+  }, [capitalCorrect]);
+  
+  const isNewQuizFirstRun = useRef(true);
+  useEffect (() => {
+    if (isNewQuizFirstRun.current) {
+      isNewQuizFirstRun.current = false;
+      return;
+    }
+    
+    if (isNewQuiz == true) {
+      console.log("isNewQuiz");
+      startNewQuiz();
+    }
+  }, [isNewQuiz]);
+  
+  const startNewQuiz = () => {
+    if (guessMade === false) {
+      setTotalGuesses(totalGuesses + 1);
+    }
+    
+    setGuessMade(false);
+    
+    setInputCapital("");
+
+    // remove item from all the countries
+    for( var i = 0; i < countriesRemaining.length; i++){ 
+        if ( countriesRemaining[i] === item) { 
+            countriesRemaining.splice(i, 1); 
+        }
+    }
+    // new item
+    setItem(countriesRemaining[Math.floor(Math.random() * countriesRemaining.length)]);
+    setIsNewQuiz(false);
+  }
+  
+  const handleInput = () => {
+    if (inputCapital.length !== 0) {
+      checkIfCorrect();
+    }
+  }
+  
+  const checkIfCorrect = () => {
+    if (item && guessMade === false) {
+      setGuessMade(true);
+      setTotalGuesses(totalGuesses + 1);
+      let capital = item.capital;
+      if (inputCapital === capital) {
+        setCapitalCorrect(true);
+        var audio = new Audio('https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3');
+        audio.play();
+      }
+      else {
+        setCapitalCorrect(false);
+        setInputCapital(capital);
+      }
+    }
+  };
+  
+  const handleKeyPress = e => {
+    if (e.key === "Enter") {
+      checkIfCorrect();
+    }
+  };
+
   return (
     <>
       <div className="container">
@@ -447,8 +509,32 @@ const Quiz2 = ({ data }) => {
             <h1>Where in the world?</h1>
           </div>
         </div>
+        <div className="button-guess-container">
+          <div className="button-guess-center">
+            <button className="button-guess-variant">
+              First
+            </button>
+            <button className="button-guess-variant">
+              Second
+            </button>
+            <button className="button-guess-variant">
+              Third
+            </button>
+            <button className="button-guess-variant">
+              Fourth
+            </button>
+            <button className="button-guess-variant">
+              Fifth
+            </button>
+            <button className="button-guess-variant">
+              Sixth
+            </button>
+          </div>
+        </div>
         <div className="custom-cont">
           <div>
+          
+            {/*<!-- Back -->*/}
             <button className="back-btn">
               <Link to="/">
                 <span>
@@ -457,14 +543,21 @@ const Quiz2 = ({ data }) => {
                 <span>Back</span>
               </Link>
             </button>
-            <button className="next-btn">
-              <Link to="/quiz2Reload">
+            
+            <h5>
+              {guessedCorrect} / {totalGuesses}
+            </h5>
+            
+            {/*<!-- Next -->*/}
+            <button className="next-btn" onClick={() => { setIsNewQuiz(true); }}>
+              <div>
                 <span>
                   <i className="fas fa-arrow-right"></i>
                 </span>
                 <span>Next</span>
-              </Link>
+              </div>
             </button>
+            
           </div>
           <div className="custom-grid">
             <div className="custom-img">
