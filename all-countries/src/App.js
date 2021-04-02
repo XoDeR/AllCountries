@@ -413,21 +413,23 @@ const Quiz2 = ({ data }) => {
   
   const [countriesRemaining, setCountriesRemaining] = useState(data);
   
+  const [capitalVariants, setCapitalVariants] = useState([]);
+  
   const [item, setItem] = useState(countriesRemaining[Math.floor(Math.random() * countriesRemaining.length)]);
   
   const [inputCapital, setInputCapital] = useState("");
   
   const [capitalCorrect, setCapitalCorrect] = useState(false);
-  
+
   const [isNewQuiz, setIsNewQuiz] = useState(false);
   
   const [guessMade, setGuessMade] = useState(false);
   const [guessedCorrect, setGuessedCorrect] = useState(0);
   const [totalGuesses, setTotalGuesses] = useState(0);
   
-  const [capitalVariants, setCapitalVariants] = useState([]);
-  
   const initCapitalVariantsList = () => {
+    console.log("initCapitalVariantsList");
+    
     let countryItemListAux = data;
     let counter = 0;
     let capitalsToAdd = [];
@@ -444,6 +446,8 @@ const Quiz2 = ({ data }) => {
       
       counter++;
     }
+    
+    capitalsToAdd[Math.floor(Math.random() * capitalsToAdd.length)] = item.capital;
     
     setCapitalVariants(capitalsToAdd);
   }
@@ -479,15 +483,23 @@ const Quiz2 = ({ data }) => {
     }
   }, [isNewQuiz]);
   
+  const isItemFirstRun = useRef(true);
+  useEffect (() => {
+    if (isItemFirstRun.current) {
+      isItemFirstRun.current = false;
+      return;
+    }
+    initCapitalVariantsList();
+  }, [item]);
+  
   const startNewQuiz = () => {
+    console.log("startNewQuiz");
+    
     if (guessMade === false) {
       setTotalGuesses(totalGuesses + 1);
     }
     
     setGuessMade(false);
-    
-    initCapitalVariantsList();
-    
     setInputCapital("");
 
     // remove item from all the countries
@@ -499,6 +511,8 @@ const Quiz2 = ({ data }) => {
     // new item
     setItem(countriesRemaining[Math.floor(Math.random() * countriesRemaining.length)]);
     setIsNewQuiz(false);
+    
+    console.log("startNewQuiz finished");
   }
   
   const handleInput = () => {
