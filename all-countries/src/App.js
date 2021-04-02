@@ -225,6 +225,26 @@ const Quiz1 = ({ data }) => {
   
   const [capitalCorrect, setCapitalCorrect] = useState(false);
   
+  // set initial state
+  //useEffect(()=>{},[])
+  
+  const startNewQuiz = () => {
+    // remove item from all the countries
+    for( var i = 0; i < data.length; i++){ 
+        if ( data[i] === item) { 
+            data.splice(i, 1); 
+        }
+    }
+    // new item
+    setItem(data[Math.floor(Math.random() * data.length)])
+  }
+  
+  const handleInput = () => {
+    if (inputCapital.length !== 0) {
+      checkIfCorrect();
+    }
+  }
+  
   const checkIfCorrect = () => {
     if (inputCapital === capital) {
       setCapitalCorrect(true);
@@ -253,6 +273,7 @@ const Quiz1 = ({ data }) => {
         </div>
         <div className="custom-cont">
           <div>
+            {/*<!-- Back -->*/}
             <button className="back-btn">
               <Link to="/">
                 <span>
@@ -261,6 +282,7 @@ const Quiz1 = ({ data }) => {
                 <span>Back</span>
               </Link>
             </button>
+            {/*<!-- Next -->*/}
             <button className="next-btn">
               <Link to="/quiz1Reload">
                 <span>
@@ -269,9 +291,11 @@ const Quiz1 = ({ data }) => {
                 <span>Next</span>
               </Link>
             </button>
+          
           </div>
           <div className="input-capital">
             <i className="fas fa-search"></i>
+            
             <input
               type="text"
               placeholder="Capital..."
@@ -282,6 +306,11 @@ const Quiz1 = ({ data }) => {
               }}
               onKeyPress={handleKeyPress}
             />
+            
+            <button onClick={() => { handleInput(); }}>
+              Enter
+            </button>
+            
           </div>
           <div className="custom-grid">
             <div className="custom-img">
