@@ -76,7 +76,7 @@ button {
 }
 
 .button-guess-container {
-  height: 200px;
+  height: 120px;
   position: relative;
   border: 1px solid beige;
 }
@@ -85,7 +85,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
+  height: 120px;
   border: 1px solid beige;
 }
 

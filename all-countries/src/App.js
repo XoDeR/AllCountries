@@ -425,6 +425,33 @@ const Quiz2 = ({ data }) => {
   const [guessedCorrect, setGuessedCorrect] = useState(0);
   const [totalGuesses, setTotalGuesses] = useState(0);
   
+  const [capitalVariants, setCapitalVariants] = useState([]);
+  
+  const initCapitalVariantsList = () => {
+    let countryItemListAux = data;
+    let counter = 0;
+    let capitalsToAdd = [];
+    while (counter < 6) {
+      let countryItem = countryItemListAux[Math.floor(Math.random() * countryItemListAux.length)];
+      
+      capitalsToAdd.push(countryItem.capital);
+
+      for (var i = 0; i < countryItemListAux.length; i++){ 
+        if (countryItemListAux[i] === item) { 
+          countryItemListAux.splice(i, 1); 
+        }
+      }
+      
+      counter++;
+    }
+    
+    setCapitalVariants(capitalsToAdd);
+  }
+  
+  useEffect (() => {
+    initCapitalVariantsList();
+  }, [])
+  
   const isCapitalCorrectFirstRun = useRef(true);
   useEffect (() => {
     if (isCapitalCorrectFirstRun.current) {
@@ -459,13 +486,15 @@ const Quiz2 = ({ data }) => {
     
     setGuessMade(false);
     
+    initCapitalVariantsList();
+    
     setInputCapital("");
 
     // remove item from all the countries
-    for( var i = 0; i < countriesRemaining.length; i++){ 
-        if ( countriesRemaining[i] === item) { 
-            countriesRemaining.splice(i, 1); 
-        }
+    for (var i = 0; i < countriesRemaining.length; i++){ 
+      if (countriesRemaining[i] === item) { 
+        countriesRemaining.splice(i, 1); 
+      }
     }
     // new item
     setItem(countriesRemaining[Math.floor(Math.random() * countriesRemaining.length)]);
@@ -512,22 +541,22 @@ const Quiz2 = ({ data }) => {
         <div className="button-guess-container">
           <div className="button-guess-center">
             <button className="button-guess-variant">
-              First
+              {capitalVariants[0]}
             </button>
             <button className="button-guess-variant">
-              Second
+              {capitalVariants[1]}
             </button>
             <button className="button-guess-variant">
-              Third
+              {capitalVariants[2]}
             </button>
             <button className="button-guess-variant">
-              Fourth
+              {capitalVariants[3]}
             </button>
             <button className="button-guess-variant">
-              Fifth
+              {capitalVariants[4]}
             </button>
             <button className="button-guess-variant">
-              Sixth
+              {capitalVariants[5]}
             </button>
           </div>
         </div>
