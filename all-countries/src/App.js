@@ -261,7 +261,7 @@ const Quiz1 = ({ data }) => {
   }
   
   const checkIfCorrect = () => {
-    if (item) {
+    if (item && guessMade === false) {
       setGuessMade(true);
       setTotalGuesses(totalGuesses + 1);
       let capital = item.capital;
