@@ -436,7 +436,7 @@ const Quiz2 = ({ data }) => {
     while (counter < 6) {
       let countryItem = countryItemListAux[Math.floor(Math.random() * countryItemListAux.length)];
       
-      capitalsToAdd.push(countryItem.capital);
+      capitalsToAdd.push({key : counter, capital : countryItem.capital});
 
       for (var i = 0; i < countryItemListAux.length; i++){ 
         if (countryItemListAux[i] === item) { 
@@ -447,7 +447,8 @@ const Quiz2 = ({ data }) => {
       counter++;
     }
     
-    capitalsToAdd[Math.floor(Math.random() * capitalsToAdd.length)] = item.capital;
+    let randomIndex = Math.floor(Math.random() * capitalsToAdd.length);
+    capitalsToAdd[randomIndex] = {key : randomIndex, capital : item.capital};
     
     setCapitalVariants(capitalsToAdd);
   }
@@ -554,24 +555,11 @@ const Quiz2 = ({ data }) => {
         </div>
         <div className="button-guess-container">
           <div className="button-guess-center">
-            <button className="button-guess-variant">
-              {capitalVariants[0]}
-            </button>
-            <button className="button-guess-variant">
-              {capitalVariants[1]}
-            </button>
-            <button className="button-guess-variant">
-              {capitalVariants[2]}
-            </button>
-            <button className="button-guess-variant">
-              {capitalVariants[3]}
-            </button>
-            <button className="button-guess-variant">
-              {capitalVariants[4]}
-            </button>
-            <button className="button-guess-variant">
-              {capitalVariants[5]}
-            </button>
+            {capitalVariants.map(item =>
+              <button key={item.key} className="button-guess-variant">
+                {item.capital}
+              </button>
+            )}
           </div>
         </div>
         <div className="custom-cont">
