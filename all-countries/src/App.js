@@ -545,7 +545,6 @@ const Quiz2 = ({ data }) => {
       }
       else {
         setCapitalCorrect(false);
-        setInputCapital(capital);
       }
     }
   };
@@ -564,11 +563,13 @@ const Quiz2 = ({ data }) => {
         </div>
         <div className="button-guess-container">
           <div className="button-guess-center">
-            {capitalVariants.map(item =>
-              <button key={item.key} className="button-guess-variant" onClick={ () => handleButtonGuessOnClick(item.key)}>
-                {item.capital}
-              </button>
-            )}
+            <GuessButtons 
+              isGuessMade={guessMade === true}
+              isCapitalCorrect={capitalCorrect === true}
+              capitalVariantList={capitalVariants}
+              capital={item.capital}
+              handleButtonGuessOnClick={handleButtonGuessOnClick}
+            />
           </div>
         </div>
         <div className="custom-cont">
@@ -667,6 +668,29 @@ const Quiz2 = ({ data }) => {
     </>
   );
 }
+
+const GuessButtons = (props) => {
+  if (props.isGuessMade === false) {
+    return (props.capitalVariantList.map(item =>
+                  <button key={item.key} className="button-guess-variant" onClick={ () => props.handleButtonGuessOnClick(item.key)}>
+                  {item.capital}
+                  </button>
+                )
+            );
+  }
+  else {
+    if (props.isCapitalCorrect === true) {
+      return (<button className="button-guess-variant">
+               {props.capital}
+              </button>);
+    }
+    else {
+      return (<button className="button-guess-variant">
+               {props.capital}
+              </button>);
+    }
+  }
+};
 
 const SingleCountry = ({ data }) => {
   const { name } = useParams();
