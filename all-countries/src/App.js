@@ -478,7 +478,7 @@ const Quiz2 = ({ data }) => {
       return;
     }
     
-    if (isNewQuiz == true) {
+    if (isNewQuiz === true) {
       console.log("isNewQuiz");
       startNewQuiz();
     }
@@ -492,6 +492,18 @@ const Quiz2 = ({ data }) => {
     }
     initCapitalVariantsList();
   }, [item]);
+  
+  const inputCapitalFirstRun = useRef(true);
+  useEffect (() => {
+    if (inputCapitalFirstRun.current) {
+      inputCapitalFirstRun.current = false;
+      return;
+    }
+    if (item && guessMade === false && inputCapital !== "") {
+      console.log("inputCapital useEffect");
+      checkIfCorrect();
+    }
+  }, [inputCapital]);
   
   const startNewQuiz = () => {
     console.log("startNewQuiz");
@@ -516,17 +528,16 @@ const Quiz2 = ({ data }) => {
     console.log("startNewQuiz finished");
   }
   
-  const handleInput = () => {
-    if (inputCapital.length !== 0) {
-      checkIfCorrect();
-    }
-  }
-  
   const checkIfCorrect = () => {
+    console.log("checkIfCorrect start");
     if (item && guessMade === false) {
       setGuessMade(true);
       setTotalGuesses(totalGuesses + 1);
       let capital = item.capital;
+      console.log("inputCapital");
+      console.log(inputCapital);
+      console.log("capital");
+      console.log(capital);
       if (inputCapital === capital) {
         setCapitalCorrect(true);
         var audio = new Audio('https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3');
@@ -539,11 +550,9 @@ const Quiz2 = ({ data }) => {
     }
   };
   
-  const handleKeyPress = e => {
-    if (e.key === "Enter") {
-      checkIfCorrect();
-    }
-  };
+  const handleButtonGuessOnClick = (id) => {
+    setInputCapital(capitalVariants[id].capital);
+  }
 
   return (
     <>
@@ -556,7 +565,7 @@ const Quiz2 = ({ data }) => {
         <div className="button-guess-container">
           <div className="button-guess-center">
             {capitalVariants.map(item =>
-              <button key={item.key} className="button-guess-variant">
+              <button key={item.key} className="button-guess-variant" onClick={ () => handleButtonGuessOnClick(item.key)}>
                 {item.capital}
               </button>
             )}
