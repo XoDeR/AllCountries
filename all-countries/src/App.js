@@ -215,7 +215,6 @@ const Quiz1 = ({ data }) => {
     }
     
     setCapitalCorrect(false);
-    console.log("capitalCorrect");
   }, [capitalCorrect]);
   
   const isNewQuizFirstRun = useRef(true);
@@ -226,7 +225,6 @@ const Quiz1 = ({ data }) => {
     }
     
     if (isNewQuiz == true) {
-      console.log("isNewQuiz");
       startNewQuiz();
     }
   }, [isNewQuiz]);
@@ -428,8 +426,6 @@ const Quiz2 = ({ data }) => {
   const [totalGuesses, setTotalGuesses] = useState(0);
   
   const initCapitalVariantsList = () => {
-    console.log("initCapitalVariantsList");
-    
     let countryItemListAux = data;
     let counter = 0;
     let capitalsToAdd = [];
@@ -468,7 +464,6 @@ const Quiz2 = ({ data }) => {
     }
     
     setCapitalCorrect(false);
-    console.log("capitalCorrect");
   }, [capitalCorrect]);
   
   const isNewQuizFirstRun = useRef(true);
@@ -479,7 +474,6 @@ const Quiz2 = ({ data }) => {
     }
     
     if (isNewQuiz === true) {
-      console.log("isNewQuiz");
       startNewQuiz();
     }
   }, [isNewQuiz]);
@@ -500,13 +494,11 @@ const Quiz2 = ({ data }) => {
       return;
     }
     if (item && guessMade === false && inputCapital !== "") {
-      console.log("inputCapital useEffect");
       checkIfCorrect();
     }
   }, [inputCapital]);
   
   const startNewQuiz = () => {
-    console.log("startNewQuiz");
     
     if (guessMade === false) {
       setTotalGuesses(totalGuesses + 1);
@@ -524,20 +516,13 @@ const Quiz2 = ({ data }) => {
     // new item
     setItem(countriesRemaining[Math.floor(Math.random() * countriesRemaining.length)]);
     setIsNewQuiz(false);
-    
-    console.log("startNewQuiz finished");
   }
   
   const checkIfCorrect = () => {
-    console.log("checkIfCorrect start");
     if (item && guessMade === false) {
       setGuessMade(true);
       setTotalGuesses(totalGuesses + 1);
       let capital = item.capital;
-      console.log("inputCapital");
-      console.log(inputCapital);
-      console.log("capital");
-      console.log(capital);
       if (inputCapital === capital) {
         setCapitalCorrect(true);
         var audio = new Audio('https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3');
